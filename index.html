@@ -1,319 +1,314 @@
-<head>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
-    <style>
-        body {
-            margin: 0;
-            font-family: 'Poppins', sans-serif;
-            background-color: #121212;
-            color: white;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100vh;
-            overflow: hidden;
-        }
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
 
-        .banner {
-            width: 100%;
-            height: 100%;
-            background-image: url('https://imgproxy.fourthwall.com/Uss37OaCwWc2WACZZczJI6AwVCTLCOder5TRlOPgkSU/w:1920/sm:1/enc/yqfmgWAg2e1viTBf/ClQB4pJy9GT1-PNS/1JdKuqe_qdv4ostE/d2orDgxkbY8URO3e/y_EwIcI1ewq37nnE/mqK4FpIrZDFmETYh/AzunNZUltfgrMMMG/FBq9OK-Ib4nI7ZsC/duIhot3eOTnXPG_p/7gdtAArC1clfho2d/1cvbr4xU9bpMGLy9/bzrMwON8kITrXMYA/132mpQToteoiu2-N/mhj2Vi_xAdqE2LiF/5oGwrXA8moA');
-            background-size: cover;
-            background-position: center;
-            position: relative;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
+<style>
+    /* Main banner container - modified for full-screen overlay */
+    .banner {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        z-index: 9999; /* Ensures banner is on top of other content */
+        font-family: 'Poppins', sans-serif;
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        background-color: #121212; /* Fallback background color */
+        background-image: url('https://imgproxy.fourthwall.com/Uss37OaCwWc2WACZZczJI6AwVCTLCOder5TRlOPgkSU/w:1920/sm:1/enc/yqfmgWAg2e1viTBf/ClQB4pJy9GT1-PNS/1JdKuqe_qdv4ostE/d2orDgxkbY8URO3e/y_EwIcI1ewq37nnE/mqK4FpIrZDFmETYh/AzunNZUltfgrMMMG/FBq9OK-Ib4nI7ZsC/duIhot3eOTnXPG_p/7gdtAArC1clfho2d/1cvbr4xU9bpMGLy9/bzrMwON8kITrXMYA/132mpQToteoiu2-N/mhj2Vi_xAdqE2LiF/5oGwrXA8moA');
+        background-size: cover;
+        background-position: center;
+        text-align: center;
+    }
 
-        .banner::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(0, 0, 0, 0.4); 
-            z-index: 1;
-        }
+    .banner::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 1;
+    }
 
-        .banner__content {
-            position: relative;
-            z-index: 2;
-            padding: 20px;
-            box-sizing: border-box;
-        }
+    .banner__content {
+        position: relative;
+        z-index: 2;
+        padding: 20px;
+        box-sizing: border-box;
+    }
 
+    .banner__title-wrapper {
+        font-weight: 700;
+        font-size: clamp(2rem, 7vw, 4.5rem);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        line-height: 1.2;
+    }
+
+    .static-text {
+        display: inline-block;
+    }
+
+    .roller-container {
+        display: inline-block;
+        overflow: hidden;
+        height: 1.2em;
+        vertical-align: middle;
+        width: auto;
+    }
+
+    .roller {
+        display: inline-block;
+        white-space: nowrap;
+    }
+
+    .roller-letter {
+        display: inline-block;
+        opacity: 0;
+        transform: translateY(100%);
+    }
+
+    .fading-you {
+        display: inline-block;
+        animation: fadeOutYou 0.6s ease forwards;
+    }
+
+    @keyframes fadeOutYou {
+        0%   { opacity: 1; transform: translateY(0); }
+        100% { opacity: 0; transform: translateY(-0.5em); }
+    }
+
+    .banner__subtitle {
+        font-family: 'Poppins', sans-serif;
+        font-size: clamp(0.7rem, 2vw, 0.8rem);
+        font-weight: 400;
+        letter-spacing: 3px;
+        margin: 35px 0 50px 0;
+        color: rgba(255, 255, 255, 0.9);
+        text-transform: uppercase;
+    }
+
+    .banner__cta {
+        display: inline-block;
+        padding: 12px 35px;
+        font-size: 11px;
+        background-color: transparent;
+        color: #fff;
+        text-decoration: none;
+        border: 1px solid #fff;
+        border-radius: 50px;
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 2.5px;
+        transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    .banner__cta:hover {
+        background-color: #fff;
+        color: #121212;
+    }
+
+    .mobile-line-break {
+        display: none;
+    }
+
+    @media (max-width: 768px) {
         .banner__title-wrapper {
-            font-weight: 700;
-            font-size: clamp(2rem, 7vw, 4.5rem);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            line-height: 1.2;
+            font-size: clamp(2.1rem, 10vw, 3rem);
+            flex-wrap: wrap;
         }
-
-        .static-text {
-            display: inline-block;
-        }
-
-        .roller-container {
-            display: inline-block;
-            overflow: hidden;
-            height: 1.2em;
-            vertical-align: middle;
-            width: auto;
-        }
-
-        .roller {
-            display: inline-block;
-            white-space: nowrap;
-        }
-
-        .roller-letter {
-            display: inline-block;
-            opacity: 0;
-            transform: translateY(100%);
-        }
-
-        .fading-you {
-            display: inline-block;
-            animation: fadeOutYou 0.6s ease forwards;
-        }
-
-        @keyframes fadeOutYou {
-            0%   { opacity: 1; transform: translateY(0); }
-            100% { opacity: 0; transform: translateY(-0.5em); }
-        }
-        
-        .banner__subtitle {
-            font-family: 'Poppins', sans-serif;
-            font-size: clamp(0.7rem, 2vw, 0.8rem);
-            font-weight: 400;
-            letter-spacing: 3px;
-            margin: 35px 0 50px 0;
-            color: rgba(255, 255, 255, 0.9);
-            text-transform: uppercase;
-        }
-        
-        .banner__cta {
-            display: inline-block;
-            padding: 12px 35px; 
-            font-size: 11px; 
-            background-color: transparent;
-            color: #fff;
-            text-decoration: none;
-            border: 1px solid #fff;
-            border-radius: 50px; 
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 2.5px;
-            transition: background-color 0.3s ease, color 0.3s ease;
-        }
-
-        .banner__cta:hover {
-            background-color: #fff;
-            color: #121212;
-        }
-        
         .mobile-line-break {
-            display: none;
+            display: block;
+            flex-basis: 100%;
+            height: 0;
+        }
+        .banner__subtitle {
+            margin: 25px 0 35px 0;
+        }
+        .banner__cta {
+            padding: 10px 25px;
+            font-size: 10px;
+        }
+    }
+</style>
+
+<section class="banner">
+    <div class="banner__content">
+        <h1 class="banner__title-wrapper">
+            <span class="static-text" id="static-line-1"></span>
+            <div class="mobile-line-break"></div>
+            <span class="static-text" id="static-line-2"></span>
+            <span class="roller-container" id="roller-container">
+                <span class="roller" id="roller"></span>
+            </span>
+            <span class="static-text" id="static-end"></span>
+        </h1>
+        <p class="banner__subtitle">
+            Minimal Design Maximum Emotion.
+        </p>
+        <a href="https://warmquote.com/collections/all" class="banner__cta">Shop Now</a>
+    </div>
+</section>
+
+<script>
+    // Using a self-invoking function to avoid polluting the global scope
+    (function() {
+        // Wait for the banner element to be in the DOM
+        const bannerElement = document.querySelector('.banner');
+        if (!bannerElement) {
+            console.error('Banner element not found.');
+            return;
         }
 
-        @media (max-width: 768px) {
-            .banner__title-wrapper {
-                /* UPDATED: Fine-tuned font size for a more balanced mobile look */
-                font-size: clamp(2.1rem, 10vw, 3rem);
-                flex-wrap: wrap;
-            }
-            .mobile-line-break {
-                display: block;
-                flex-basis: 100%;
-                height: 0;
-            }
-            .banner__subtitle {
-                /* UPDATED: Adjusted margins for better mobile spacing */
-                margin: 25px 0 35px 0;
-            }
-            .banner__cta {
-                padding: 10px 25px;
-                font-size: 10px;
-            }
+        const phrases = [
+            { staticStart: "Wear what you", roll: "feel", staticEnd: "" },
+            { staticStart: "Wear what you", roll: "love", staticEnd: "" },
+            { staticStart: "Wear what you", roll: "believe", staticEnd: "" },
+            { staticStart: "Wear what", roll: "reflects", staticEnd: "you", special: true },
+            { staticStart: "Wear what", roll: "inspires", staticEnd: "you" },
+            { staticStart: "Wear what", roll: "calms", staticEnd: "you" }
+        ];
+
+        const staticLine1El = document.getElementById('static-line-1');
+        const staticLine2El = document.getElementById('static-line-2');
+        const staticEndEl = document.getElementById('static-end');
+        const roller = document.getElementById('roller');
+        const rollerContainer = document.getElementById('roller-container');
+
+        let currentIndex = 0;
+
+        function measureTextWidth(text) {
+            const temp = document.createElement('span');
+            temp.style.visibility = 'hidden';
+            temp.style.position = 'absolute';
+            temp.style.fontSize = getComputedStyle(roller).fontSize;
+            temp.style.fontWeight = getComputedStyle(roller).fontWeight;
+            temp.style.fontFamily = getComputedStyle(roller).fontFamily;
+            temp.textContent = text;
+            // Append to the banner itself to avoid dependency on the body tag
+            bannerElement.appendChild(temp);
+            const width = temp.offsetWidth;
+            bannerElement.removeChild(temp);
+            return width;
         }
-    </style>
-</head>
-<body>
-    <section class="banner">
-        <div class="banner__content">
-            <h1 class="banner__title-wrapper">
-                <span class="static-text" id="static-line-1"></span>
-                <div class="mobile-line-break"></div>
-                <span class="static-text" id="static-line-2"></span>
-                <span class="roller-container" id="roller-container">
-                    <span class="roller" id="roller"></span>
-                </span>
-                <span class="static-text" id="static-end"></span>
-            </h1>
-            <p class="banner__subtitle">
-                Minimal Design Maximum Emotion.
-            </p>
-            <a href="https://warmquote.com/collections/all" class="banner__cta">Shop Now</a>
-        </div>
-    </section>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const phrases = [
-                { staticStart: "Wear what you", roll: "feel", staticEnd: "" },
-                { staticStart: "Wear what you", roll: "love", staticEnd: "" },
-                { staticStart: "Wear what you", roll: "believe", staticEnd: "" },
-                { staticStart: "Wear what", roll: "reflects", staticEnd: "you", special: true },
-                { staticStart: "Wear what", roll: "inspires", staticEnd: "you" },
-                { staticStart: "Wear what", roll: "calms", staticEnd: "you" }
-            ];
+        function showNextPhrase() {
+            const phrase = phrases[currentIndex];
+            const oldLetters = roller.querySelectorAll('.roller-letter');
+            const nextIndex = (currentIndex + 1) % phrases.length;
+            const nextPhrase = phrases[nextIndex];
 
-            const staticLine1El = document.getElementById('static-line-1');
-            const staticLine2El = document.getElementById('static-line-2');
-            const staticEndEl = document.getElementById('static-end');
-            const roller = document.getElementById('roller');
-            const rollerContainer = document.getElementById('roller-container');
+            const isSpecialTransition =
+                phrase.staticStart === "Wear what you" &&
+                phrase.roll === "believe" &&
+                nextPhrase.staticStart === "Wear what" &&
+                nextPhrase.roll === "reflects" &&
+                nextPhrase.staticEnd === "you" &&
+                nextPhrase.special;
 
-            let currentIndex = 0;
-
-            function measureTextWidth(text) {
-                const temp = document.createElement('span');
-                temp.style.visibility = 'hidden';
-                temp.style.position = 'absolute';
-                temp.style.fontSize = getComputedStyle(roller).fontSize;
-                temp.style.fontWeight = getComputedStyle(roller).fontWeight;
-                temp.style.fontFamily = getComputedStyle(roller).fontFamily;
-                temp.textContent = text;
-                document.body.appendChild(temp);
-                const width = temp.offsetWidth;
-                document.body.removeChild(temp);
-                return width;
-            }
-
-            function showNextPhrase() {
-                const phrase = phrases[currentIndex];
-                const oldLetters = roller.querySelectorAll('.roller-letter');
-
-                const nextIndex = (currentIndex + 1) % phrases.length;
-                const nextPhrase = phrases[nextIndex];
-
-                const isSpecialTransition =
-                    phrase.staticStart === "Wear what you" &&
-                    phrase.roll === "believe" &&
-                    nextPhrase.staticStart === "Wear what" &&
-                    nextPhrase.roll === "reflects" &&
-                    nextPhrase.staticEnd === "you" &&
-                    nextPhrase.special;
-                
-                if (isSpecialTransition) {
-                    const fadingYouSpan = document.createElement("span");
-                    fadingYouSpan.className = "fading-you";
-                    fadingYouSpan.textContent = "you";
-                    
-                    if (window.innerWidth <= 768) {
-                        staticLine1El.innerHTML = "Wear what";
-                        staticLine2El.innerHTML = '';
-                        staticLine2El.appendChild(fadingYouSpan);
-                    } else {
-                        staticLine1El.innerHTML = "Wear what&nbsp;";
-                        staticLine1El.appendChild(fadingYouSpan);
-                        staticLine2El.innerHTML = '';
-                    }
+            if (isSpecialTransition) {
+                const fadingYouSpan = document.createElement("span");
+                fadingYouSpan.className = "fading-you";
+                fadingYouSpan.textContent = "you";
+                if (window.innerWidth <= 768) {
+                    staticLine1El.innerHTML = "Wear what";
+                    staticLine2El.innerHTML = '';
+                    staticLine2El.appendChild(fadingYouSpan);
+                } else {
+                    staticLine1El.innerHTML = "Wear what&nbsp;";
+                    staticLine1El.appendChild(fadingYouSpan);
+                    staticLine2El.innerHTML = '';
                 }
+            }
 
-                gsap.to(oldLetters, {
-                    opacity: 0,
-                    y: -50,
-                    duration: 0.6,
-                    stagger: 0.03,
-                    ease: "power2.in",
-                    onComplete: () => {
-                        roller.innerHTML = '';
+            gsap.to(oldLetters, {
+                opacity: 0,
+                y: -50,
+                duration: 0.6,
+                stagger: 0.03,
+                ease: "power2.in",
+                onComplete: () => {
+                    roller.innerHTML = '';
 
-                        if (isSpecialTransition) {
-                            staticLine1El.innerHTML = "Wear what&nbsp;";
-                            staticLine2El.innerHTML = "";
-                            staticEndEl.innerHTML = "&nbsp;you";
+                    if (isSpecialTransition) {
+                        staticLine1El.innerHTML = "Wear what&nbsp;";
+                        staticLine2El.innerHTML = "";
+                        staticEndEl.innerHTML = "&nbsp;you";
 
-                            [..."reflects"].forEach(letter => {
-                                const span = document.createElement('span');
-                                span.className = 'roller-letter';
-                                span.textContent = letter;
-                                roller.appendChild(span);
-                            });
-                        } else {
-                            if (window.innerWidth <= 768 && nextPhrase.staticStart === "Wear what you") {
-                                staticLine1El.innerHTML = "Wear what";
-                                staticLine2El.innerHTML = "you&nbsp;";
-                            } else {
-                                staticLine1El.innerHTML = nextPhrase.staticStart + "&nbsp;";
-                                staticLine2El.innerHTML = "";
-                            }
-                            staticEndEl.innerHTML = nextPhrase.staticEnd ? "&nbsp;" + nextPhrase.staticEnd : "";
-
-                            [...nextPhrase.roll].forEach(letter => {
-                                const span = document.createElement('span');
-                                span.className = 'roller-letter';
-                                span.textContent = letter;
-                                roller.appendChild(span);
-                            });
-                        }
-
-                        const textToMeasure = isSpecialTransition ? "reflects" : nextPhrase.roll;
-                        gsap.to(rollerContainer, {
-                            width: measureTextWidth(textToMeasure),
-                            duration: 0.6,
-                            ease: "power2.out"
+                        [..."reflects"].forEach(letter => {
+                            const span = document.createElement('span');
+                            span.className = 'roller-letter';
+                            span.textContent = letter;
+                            roller.appendChild(span);
                         });
+                    } else {
+                        if (window.innerWidth <= 768 && nextPhrase.staticStart === "Wear what you") {
+                            staticLine1El.innerHTML = "Wear what";
+                            staticLine2El.innerHTML = "you&nbsp;";
+                        } else {
+                            staticLine1El.innerHTML = nextPhrase.staticStart + "&nbsp;";
+                            staticLine2El.innerHTML = "";
+                        }
+                        staticEndEl.innerHTML = nextPhrase.staticEnd ? "&nbsp;" + nextPhrase.staticEnd : "";
 
-                        gsap.fromTo('.roller-letter', {
-                            opacity: 0,
-                            y: 50
-                        },
-                        {
-                            opacity: 1,
-                            y: 0,
-                            duration: 0.6,
-                            stagger: 0.04,
-                            ease: "power2.out"
+                        [...nextPhrase.roll].forEach(letter => {
+                            const span = document.createElement('span');
+                            span.className = 'roller-letter';
+                            span.textContent = letter;
+                            roller.appendChild(span);
                         });
                     }
-                });
-                currentIndex = nextIndex;
-            }
 
-            // Initial setup for the new structure
-            const initialPhrase = phrases[0];
-            if (window.innerWidth <= 768 && initialPhrase.staticStart === "Wear what you") {
-                staticLine1El.innerHTML = "Wear what";
-                staticLine2El.innerHTML = "you&nbsp;";
-            } else {
-                staticLine1El.innerHTML = initialPhrase.staticStart + "&nbsp;";
-                staticLine2El.innerHTML = "";
-            }
-            staticEndEl.innerHTML = initialPhrase.staticEnd ? "&nbsp;" + initialPhrase.staticEnd : "";
-            rollerContainer.style.width = measureTextWidth(initialPhrase.roll) + 'px';
-            [...initialPhrase.roll].forEach(letter => {
-                const span = document.createElement('span');
-                span.className = 'roller-letter';
-                span.textContent = letter;
-                roller.appendChild(span);
+                    const textToMeasure = isSpecialTransition ? "reflects" : nextPhrase.roll;
+                    gsap.to(rollerContainer, {
+                        width: measureTextWidth(textToMeasure),
+                        duration: 0.6,
+                        ease: "power2.out"
+                    });
+
+                    gsap.fromTo('.roller-letter', {
+                        opacity: 0,
+                        y: 50
+                    }, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.6,
+                        stagger: 0.04,
+                        ease: "power2.out"
+                    });
+                }
             });
-            gsap.fromTo('.roller-letter',
-                { opacity: 0, y: 50 },
-                { opacity: 1, y: 0, duration: 0.6, stagger: 0.04, ease: "power2.out" }
-            );
-            currentIndex = 1;
+            currentIndex = nextIndex;
+        }
 
-            setInterval(showNextPhrase, 8000);
+        // Initial setup
+        const initialPhrase = phrases[0];
+        if (window.innerWidth <= 768 && initialPhrase.staticStart === "Wear what you") {
+            staticLine1El.innerHTML = "Wear what";
+            staticLine2El.innerHTML = "you&nbsp;";
+        } else {
+            staticLine1El.innerHTML = initialPhrase.staticStart + "&nbsp;";
+            staticLine2El.innerHTML = "";
+        }
+        staticEndEl.innerHTML = initialPhrase.staticEnd ? "&nbsp;" + initialPhrase.staticEnd : "";
+        rollerContainer.style.width = measureTextWidth(initialPhrase.roll) + 'px';
+        [...initialPhrase.roll].forEach(letter => {
+            const span = document.createElement('span');
+            span.className = 'roller-letter';
+            span.textContent = letter;
+            roller.appendChild(span);
         });
-    </script>
-</body>
-</html>
+        gsap.fromTo('.roller-letter',
+            { opacity: 0, y: 50 },
+            { opacity: 1, y: 0, duration: 0.6, stagger: 0.04, ease: "power2.out" }
+        );
+        currentIndex = 1;
 
-
+        setInterval(showNextPhrase, 4000); // Shortened interval for demonstration
+    })();
+</script>
